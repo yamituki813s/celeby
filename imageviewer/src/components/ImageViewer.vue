@@ -30,7 +30,7 @@ export default class ImageViewer extends Vue {
   timer: number = 0;
   index: number = 0;
   showImageurl: string | null = null;
-  changeTime: number = 5000;
+  changeTime: number = 8000;
 
   created() {
     db.collection("image").onSnapshot(ss => {
@@ -63,9 +63,24 @@ export default class ImageViewer extends Vue {
   overflow: hidden;
   width: 100%;
   height: 100vh;
-  background-size: cover;
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
+  animation: fadeSlideImg 8s ease-out infinite;
+}
+@keyframes fadeSlideImg {
+  0% {
+    opacity: 1;
+  }
+  33% {
+    opacity: 0.8;
+  }
+  66% {
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0;
+  }
 }
 </style>
