@@ -1,10 +1,12 @@
 <template>
   <div>
     <div v-if="showImageurl">
-      <div
-        id="viewer-area"
-        :style="{ backgroundImage: 'url(' + showImageurl + ')' }"
-      ></div>
+      <div v-for="image in images" :key="image.id">
+        <div
+          v-bind:id="showImageurl == image['url'] ? 'viewer-area' : ''"
+          :style="{ backgroundImage: 'url(' + image['url'] + ')' }"
+        ></div>
+      </div>
     </div>
     <div v-else>
       準備中。。。。
