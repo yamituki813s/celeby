@@ -2,8 +2,8 @@
   <div>
     <div v-if="showImageurl">
       <div v-for="image in images" :key="image.id">
-        <div
-          v-bind:id="showImageurl == image['url'] ? 'viewer-area' : ''"
+        <div 
+          v-bind:class="showImageurl == image['url'] ? 'viewer-area' : 'hidden'"
           :style="{ backgroundImage: 'url(' + image['url'] + ')' }"
         ></div>
       </div>
@@ -61,7 +61,10 @@ export default class ImageViewer extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-#viewer-area {
+.hidden {
+  display: none;
+}
+.viewer-area {
   position: relative;
   overflow: hidden;
   width: 100%;
