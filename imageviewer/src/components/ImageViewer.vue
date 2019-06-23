@@ -36,7 +36,7 @@ export default class ImageViewer extends Vue {
 
   created() {
     db.collection("image").onSnapshot(ss => {
-      clearInterval(this.timer);
+      clearTimeout(this.timer);
       let w: firebase.firestore.DocumentData = [];
       ss.forEach(doc => w.push(doc.data()));
       this.images = w;
@@ -45,11 +45,12 @@ export default class ImageViewer extends Vue {
     });
   }
   onTimer() {
-    this.timer = setInterval(() => {
+    this.timer = setTimeout(() => {
       const nextIndex: number =
         this.images.length > this.index + 1 ? this.index + 1 : 0;
       this.showImageurl = this.images[nextIndex]["url"];
       this.index = nextIndex;
+      this.onTimer();
     }, this.changeTime);
   }
   mounted() {
