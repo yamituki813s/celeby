@@ -1,8 +1,13 @@
 <template>
-  <div>
+  <div id="container">
     <div v-if="showImageurl">
+      <div v-for="comment in comments" :key="comment.id">
+        <span class="comment" v-bind:style="{ top: comment['y'] + 'px' }">
+          {{ comment["text"] }}
+        </span>
+      </div>
       <div v-for="image in images" :key="image.id">
-        <div 
+        <div
           v-bind:class="showImageurl == image['url'] ? 'viewer-area' : 'hidden'"
           :style="{ backgroundImage: 'url(' + image['url'] + ')' }"
         ></div>
@@ -22,7 +27,8 @@ const images = db.collection("images");
 
 @Component
 export default class ImageViewer extends Vue {
-  images: firebase.firestore.DocumentData = [];
+  comments: any[] = [];
+  images: any[] = [];
   swiperOption = {
     slidesPerView: "auto",
     centeredSlides: true,
@@ -35,13 +41,28 @@ export default class ImageViewer extends Vue {
   changeTime: number = 8000;
 
   created() {
-    db.collection("image").onSnapshot(ss => {
+    db.collection("image").onSnapshot(snapShot => {
       clearTimeout(this.timer);
-      let w: firebase.firestore.DocumentData = [];
-      ss.forEach(doc => w.push(doc.data()));
-      this.images = w;
+      let docs: any[] = [];
+      snapShot.forEach(doc => docs.push(doc.data()));
+      this.images = docs;
       this.showImageurl = this.images[0]["url"] || null;
       this.onTimer();
+    });
+    db.collection("comments").onSnapshot(snapShot => {
+      let docs: any[] = [];
+      snapShot.forEach(doc => {
+        const exists: boolean =
+          this.comments.some(comment => {
+            console.log(doc.id + ":" + comment.id);
+            return comment.id === doc.id;
+          }) || false;
+        if (!exists) {
+          this.comments.push(
+            Object.assign(doc.data(), { y: this.getPosition(), id: doc.id })
+          );
+        }
+      });
     });
   }
   onTimer() {
@@ -53,6 +74,11 @@ export default class ImageViewer extends Vue {
       this.onTimer();
     }, this.changeTime);
   }
+  getPosition() {
+    const max: number = 10;
+    const min: number = window.outerHeight - 50;
+    return Math.floor(Math.random() * (max + 1 - min)) + min;
+  }
   mounted() {
     this.onTimer();
   }
@@ -61,6 +87,10 @@ export default class ImageViewer extends Vue {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#container {
+  width: 100%;
+  height: 100vh;
+}
 .hidden {
   display: none;
 }
@@ -87,6 +117,23 @@ export default class ImageViewer extends Vue {
   }
   100% {
     opacity: 0;
+  }
+}
+.comment {
+  z-index: 999;
+  font-size: 2rem;
+  width: 100%;
+  position: fixed;
+  display: inline-block;
+  overflow: hidden;
+  animation: comment 5s linear 0s 1 normal forwards;
+}
+@keyframes comment {
+  0% {
+    transform: translate(0%);
+  }
+  100% {
+    transform: translate(100%);
   }
 }
 </style>
