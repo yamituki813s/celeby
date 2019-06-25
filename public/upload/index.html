@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Happy Bridal! Gengo & Erika</title>
+    <link rel="stylesheet" type="text/css" href="/css/upload.css"  media="screen">
+
+    <script defer src="/__/firebase/6.2.1/firebase-app.js"></script>
+    <script defer src="/__/firebase/6.2.1/firebase-auth.js"></script>
+    <script defer src="/__/firebase/6.2.1/firebase-firestore.js"></script>
+    <script defer src="/__/firebase/6.2.1/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/6.2.1/firebase-storage.js"></script>
+    <script defer src="/__/firebase/init.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+    <script src="/js/vendor/megapix-image.js"></script>
+    <script src="/js/upload.js"></script>
+  </head>
+  <body>
+    <!-- Logo -->
+    <div class="header">
+      <img class="logo" src="/images/upload/logo.png" alt="Happy Bridal! Gengo & Erika"/>
+    </div>
+
+    <img class="loading" src="/images/upload/loading.gif"/>
+
+    <!-- Complete -->
+    <div class="complete_message" style="display:none;">画像を投稿しました</div>
+
+    <!-- Confirm -->
+    <div class="confirm_message" style="display:none;">
+      この画像でよろしいですか？
+      <input type="button" id="button_upload" value="この画像をアップロードする"/>
+      <div class="image"><img id="src_keeper"/></div>
+      <img class="uploading" src="/images/upload/loading.gif" style="display:none;"/>
+    </div>
+
+    <!-- Upload form -->
+    <div class="upload_message" style="display:none;">
+      元吾さん、絵里香さんとの<br/>写真をアップロードして<br/>思い出を共有してください<spna class="heart">&hearts;</spna>
+      <input type="button" id="file_selector" value="画像を選ぶ" style="display:none;"/>
+      <input type="file" id="file_holder" accept="image/jpeg, image/gif, image/png" name="files[]" style="display:none;">
+    </div>
+  </body>
+</html>
