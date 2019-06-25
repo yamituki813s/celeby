@@ -41,29 +41,33 @@ export default class ImageViewer extends Vue {
   changeTime: number = 8000;
 
   created() {
-    db.collection("image").onSnapshot(snapShot => {
-      clearTimeout(this.timer);
-      let docs: any[] = [];
-      snapShot.forEach(doc => docs.push(doc.data()));
-      this.images = docs;
-      this.showImageurl = this.images[0]["url"] || null;
-      this.onTimer();
-    });
-    db.collection("comments").onSnapshot(snapShot => {
-      let docs: any[] = [];
-      snapShot.forEach(doc => {
-        const exists: boolean =
-          this.comments.some(comment => {
-            console.log(doc.id + ":" + comment.id);
-            return comment.id === doc.id;
-          }) || false;
-        if (!exists) {
-          this.comments.push(
-            Object.assign(doc.data(), { y: this.getPosition(), id: doc.id })
-          );
-        }
+    db.collection("images")
+      .orderBy("created_at")
+      .onSnapshot(snapShot => {
+        clearTimeout(this.timer);
+        let docs: any[] = [];
+        snapShot.forEach(doc => docs.push(doc.data()));
+        this.images = docs;
+        this.showImageurl = this.images[0]["url"] || null;
+        this.onTimer();
       });
-    });
+    db.collection("comments")
+      .orderBy("created_at")
+      .onSnapshot(snapShot => {
+        let docs: any[] = [];
+        snapShot.forEach(doc => {
+          const exists: boolean =
+            this.comments.some(comment => {
+              console.log(doc.id + ":" + comment.id);
+              return comment.id === doc.id;
+            }) || false;
+          if (!exists) {
+            this.comments.push(
+              Object.assign(doc.data(), { y: this.getPosition(), id: doc.id })
+            );
+          }
+        });
+      });
   }
   onTimer() {
     this.timer = setTimeout(() => {
