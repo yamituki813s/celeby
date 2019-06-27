@@ -8,7 +8,7 @@ module.exports = {
       config.optimization.delete("splitChunks");
 
       //メインJSファイル名にハッシュ値をつけない
-      config.output.filename("[name].js");
+      config.output.filename("js/[name].js");
 
       //imagesに置く画像ファイル名にハッシュ値をつけない
       config.module
@@ -18,7 +18,7 @@ module.exports = {
         .loader("url-loader")
         .options({
           limit: 4096,
-          name: "img/[name].[ext]"
+          name: "images/[name].[ext]"
         });
 
       //svgのファイル名にハッシュ値をつけない
@@ -28,7 +28,7 @@ module.exports = {
         .use("file-loader")
         .loader("file-loader")
         .options({
-          name: "img/[name].[ext]"
+          name: "images/[name].[ext]"
         });
 
       //mediaに置くメディアファイル名にハッシュ値をつけない
@@ -56,7 +56,7 @@ module.exports = {
       //CSSファイル名にハッシュ値をつけない
       config.plugin("extract-css").use(MiniCssExtractPlugin, [
         {
-          filename: "[name].css",
+          filename: "css/[name].css",
           chunkFilename: ""
         }
       ]);
