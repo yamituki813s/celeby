@@ -97,6 +97,9 @@ export default class ImageViewer extends Vue {
 }
 .hidden {
   display: none;
+  overflow: hidden;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 .viewer-area {
   position: relative;
@@ -108,6 +111,9 @@ export default class ImageViewer extends Vue {
   background-position: center center;
   background-attachment: fixed;
   animation: fadeSlideImg 8s ease-out infinite;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
 }
 @keyframes fadeSlideImg {
   0% {
