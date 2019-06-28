@@ -42,17 +42,17 @@ export default class ImageViewer extends Vue {
 
   created() {
     db.collection("images")
-      .orderBy("created_at")
+      .orderBy("created_at", "desc")
       .onSnapshot(snapShot => {
         clearTimeout(this.timer);
         let docs: any[] = [];
         snapShot.forEach(doc => docs.push(doc.data()));
-        this.images = docs;
+        this.images = docs.sort((a, b) => b.created_at - a.created_at);
         this.showImageurl = this.images[0]["url"] || null;
         this.onTimer();
       });
     db.collection("comments")
-      .orderBy("created_at")
+      .orderBy("created_at", "desc")
       .onSnapshot(snapShot => {
         let docs: any[] = [];
         snapShot.forEach(doc => {
