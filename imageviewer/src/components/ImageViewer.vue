@@ -43,12 +43,16 @@ export default class ImageViewer extends Vue {
   created() {
     db.collection("images")
       .orderBy("created_at", "desc")
-      .onSnapshot(snapShot => {
+      .onSnapshot(async snapShot => {
         clearTimeout(this.timer);
+        if (this.index !== 0) {
+          await this.sleep(3000);
+        }
         let docs: any[] = [];
         snapShot.forEach(doc => docs.push(doc.data()));
         this.images = docs.sort((a, b) => b.created_at - a.created_at);
         this.showImageurl = this.images[0]["url"] || null;
+        this.index++;
         this.onTimer();
       });
     db.collection("comments")
@@ -68,6 +72,11 @@ export default class ImageViewer extends Vue {
           }
         });
       });
+  }
+  async sleep(milliseconds: number) {
+    return new Promise<void>(resolve => {
+      setTimeout(() => resolve(), milliseconds);
+    });
   }
   onTimer() {
     this.timer = setTimeout(() => {
