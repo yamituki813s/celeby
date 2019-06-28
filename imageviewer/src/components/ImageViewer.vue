@@ -92,23 +92,21 @@ export default class ImageViewer extends Vue {
     const min: number = window.outerHeight - 50;
     return Math.floor(Math.random() * (max + 1 - min)) + min;
   }
-  mounted() {
-    this.onTimer();
-  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #container {
+  background-color: dimgrey;
   width: 100%;
   height: 100vh;
 }
 .hidden {
   display: none;
   overflow: hidden;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .viewer-area {
   position: relative;
@@ -119,10 +117,7 @@ export default class ImageViewer extends Vue {
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
-  animation: fadeSlideImg 8s ease-out infinite;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transform: translate3d(0, 0, 0);
+  animation: fadeSlideImg 8s ease-out 0s 1 normal forwards;
 }
 @keyframes fadeSlideImg {
   0% {
