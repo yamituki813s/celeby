@@ -2,9 +2,9 @@
   <div id="container">
     <div v-if="showImageurl">
       <div v-for="comment in comments" :key="comment.id">
-        <span class="comment" v-bind:style="{ top: comment['y'] + 'px' }">
+        <div class="comment" v-bind:style="{ top: comment['y'] + 'px' }">
           {{ comment["text"] }}
-        </span>
+        </div>
       </div>
       <div v-for="image in images" :key="image.id">
         <div
@@ -38,7 +38,7 @@ export default class ImageViewer extends Vue {
   timer: number = 0;
   index: number = 0;
   showImageurl: string | null = null;
-  changeTime: number = 8000;
+  changeTime: number = 10000;
 
   created() {
     db.collection("images")
@@ -88,8 +88,8 @@ export default class ImageViewer extends Vue {
     }, this.changeTime);
   }
   getPosition() {
-    const max: number = 10;
-    const min: number = window.outerHeight - 50;
+    const max: number = 100;
+    const min: number = window.outerHeight - 100;
     return Math.floor(Math.random() * (max + 1 - min)) + min;
   }
 }
@@ -117,13 +117,16 @@ export default class ImageViewer extends Vue {
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
-  animation: fadeSlideImg 8s ease-out 0s 1 normal forwards;
+  animation: fadeSlideImg 10s ease-out 0s 1 normal forwards;
 }
 @keyframes fadeSlideImg {
   0% {
     opacity: 1;
   }
   33% {
+    opacity: 0.9;
+  }
+  40% {
     opacity: 0.8;
   }
   66% {
@@ -140,7 +143,8 @@ export default class ImageViewer extends Vue {
   position: fixed;
   display: inline-block;
   overflow: hidden;
-  animation: comment 5s linear 0s 1 normal forwards;
+  white-space: nowrap;
+  animation: comment 7s linear 0s 1 normal forwards;
 }
 @keyframes comment {
   0% {
