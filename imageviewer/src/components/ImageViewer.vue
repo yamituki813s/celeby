@@ -2,9 +2,9 @@
   <div id="container">
     <div v-if="showImageurl">
       <div v-for="comment in comments" :key="comment.id">
-        <span class="comment" v-bind:style="{ top: comment['y'] + 'px' }">
+        <div class="comment" v-bind:style="{ top: comment['y'] + 'px' }">
           {{ comment["text"] }}
-        </span>
+        </div>
       </div>
       <div v-for="image in images" :key="image.id">
         <div
@@ -38,21 +38,25 @@ export default class ImageViewer extends Vue {
   timer: number = 0;
   index: number = 0;
   showImageurl: string | null = null;
-  changeTime: number = 8000;
+  changeTime: number = 10000;
 
   created() {
     db.collection("images")
-      .orderBy("created_at")
-      .onSnapshot(snapShot => {
+      .orderBy("created_at", "desc")
+      .onSnapshot(async snapShot => {
         clearTimeout(this.timer);
+        if (this.index !== 0) {
+          await this.sleep(3000);
+        }
         let docs: any[] = [];
         snapShot.forEach(doc => docs.push(doc.data()));
-        this.images = docs;
+        this.images = docs.sort((a, b) => b.created_at - a.created_at);
         this.showImageurl = this.images[0]["url"] || null;
+        this.index++;
         this.onTimer();
       });
     db.collection("comments")
-      .orderBy("created_at")
+      .orderBy("created_at", "desc")
       .onSnapshot(snapShot => {
         let docs: any[] = [];
         snapShot.forEach(doc => {
@@ -69,6 +73,11 @@ export default class ImageViewer extends Vue {
         });
       });
   }
+  async sleep(milliseconds: number) {
+    return new Promise<void>(resolve => {
+      setTimeout(() => resolve(), milliseconds);
+    });
+  }
   onTimer() {
     this.timer = setTimeout(() => {
       const nextIndex: number =
@@ -79,12 +88,9 @@ export default class ImageViewer extends Vue {
     }, this.changeTime);
   }
   getPosition() {
-    const max: number = 10;
-    const min: number = window.outerHeight - 50;
+    const max: number = 100;
+    const min: number = window.outerHeight - 100;
     return Math.floor(Math.random() * (max + 1 - min)) + min;
-  }
-  mounted() {
-    this.onTimer();
   }
 }
 </script>
@@ -92,14 +98,15 @@ export default class ImageViewer extends Vue {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 #container {
+  background-color: dimgrey;
   width: 100%;
   height: 100vh;
 }
 .hidden {
   display: none;
   overflow: hidden;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 .viewer-area {
   position: relative;
@@ -110,16 +117,16 @@ export default class ImageViewer extends Vue {
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
-  animation: fadeSlideImg 8s ease-out infinite;
-  -webkit-backface-visibility: hidden;
-  backface-visibility: hidden;
-  -webkit-transform: translate3d(0, 0, 0);
+  animation: fadeSlideImg 10s ease-out 0s 1 normal forwards;
 }
 @keyframes fadeSlideImg {
   0% {
     opacity: 1;
   }
   33% {
+    opacity: 0.9;
+  }
+  40% {
     opacity: 0.8;
   }
   66% {
@@ -136,7 +143,8 @@ export default class ImageViewer extends Vue {
   position: fixed;
   display: inline-block;
   overflow: hidden;
-  animation: comment 5s linear 0s 1 normal forwards;
+  white-space: nowrap;
+  animation: comment 7s linear 0s 1 normal forwards;
 }
 @keyframes comment {
   0% {
