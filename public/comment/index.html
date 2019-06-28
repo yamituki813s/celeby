@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Happy Bridal! Gengo & Erika</title>
+    <link rel="stylesheet" type="text/css" href="/css/comment.css"  media="screen">
+
+    <script defer src="/__/firebase/6.2.1/firebase-app.js"></script>
+    <script defer src="/__/firebase/6.2.1/firebase-auth.js"></script>
+    <script defer src="/__/firebase/6.2.1/firebase-firestore.js"></script>
+    <script defer src="/__/firebase/6.2.1/firebase-messaging.js"></script>
+    <script defer src="/__/firebase/6.2.1/firebase-storage.js"></script>
+    <script defer src="/__/firebase/init.js"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"></script>
+    <script src="/js/comment.js"></script>
+  </head>
+  <body>
+    <!-- Logo -->
+    <div class="header">
+      <img class="logo" src="/images/comment/logo.png" alt="Happy Bridal! Gengo & Erika"/>
+    </div>
+
+    <img class="loading" src="/images/loading.gif"/>
+
+    <!-- Complete -->
+    <div class="complete_message" style="display:none;">メッセージを投稿しました</div>
+
+    <!-- Comment form -->
+    <div class="comment_message" style="display:none;">
+      元吾さん、絵里香さんへ<br/>お祝いのメッセージを送ってください<spna class="heart">&hearts;</spna>
+      <input type="text" id="message_box"/><br/>
+      <input type="button" id="send_comment" value="メッセージを送る"/>
+      <img class="commenting" src="/images/loading.gif" style="display:none;"/>
+    </div>
+
+    <div class="footer"><a href="/upload">こちらから写真も送ってください</a></div>
+  </body>
+</html>
