@@ -80,10 +80,14 @@ $(function() {
       var is_ok = true;
       for (var i = 0; i < ng_word_list.length; i++) {
         if (message.match(ng_word_list[i])) {
-          //alert('禁止ワード"' + ng_word_list[i] + '"が含まれています');
-          alert('禁止ワードが含まれています');
+          is_ok = false;
           break;
         }
+      }
+      if (!is_ok) {
+        alert('禁止用語が含まれています。申し訳ありません');
+        enableButtons();
+        return;
       }
 
       sendMessage(message).then(function() {
